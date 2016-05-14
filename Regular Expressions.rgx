@@ -16,3 +16,5 @@
 ( |\t)*sw( |\t)+REG( |\t)*,( |\t)*IMM( |\t)*\(( |\t)*REG( |\t)*\)( |\t)*
 ( |\t)*j( |\t)+IMM( |\t)*
 ( |\t)*jal( |\t)+IMM( |\t)*
+( |\t)*jump_procedure( |\t)+IMM( |\t)*
+( |\t)*return_procedure( |\t)*

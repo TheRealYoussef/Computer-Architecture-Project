@@ -51,7 +51,7 @@ void MIPSParser::parse(const string& fileName) {
 				d = regNameToNumber((*(it++))[0]);
 				s = regNameToNumber((*(it++))[0]);
 				t = regNameToNumber((*it)[0]);
-				instruction.setRType(i, s, t, d);
+				instruction.setRType(line, i, s, t, d);
 				instructions.push_back(instruction);
 				matchesRgx = true;
 				break;
@@ -63,7 +63,7 @@ void MIPSParser::parse(const string& fileName) {
 			sregex_iterator it{ line.begin(), line.end(), regRgx };
 			int s;
 			s = regNameToNumber((*it)[0]);
-			instruction.setRType(MIPSInstruction::JR, s);
+			instruction.setRType(line, MIPSInstruction::JR, s);
 			instructions.push_back(instruction);
 			continue;
 		}
@@ -86,7 +86,7 @@ void MIPSParser::parse(const string& fileName) {
 					ss << hex << immStr.substr(2, immStr.length() - 2);
 					ss >> immediate;
 				}
-				instruction.setIType(i, s, t, immediate);
+				instruction.setIType(line, i, s, t, immediate);
 				instructions.push_back(instruction);
 				matchesRgx = true;
 				break;
@@ -111,7 +111,7 @@ void MIPSParser::parse(const string& fileName) {
 					ss << hex << immStr.substr(2, immStr.length() - 2);
 					ss >> immediate;
 				}
-				instruction.setIType(i, s, t, immediate);
+				instruction.setIType(line, i, s, t, immediate);
 				instructions.push_back(instruction);
 				matchesRgx = true;
 				break;
@@ -119,7 +119,7 @@ void MIPSParser::parse(const string& fileName) {
 		}
 		if (matchesRgx)
 			continue;
-		for (MIPSInstruction::InstructionName i = MIPSInstruction::J; i <= MIPSInstruction::JAL; i = (MIPSInstruction::InstructionName)(i + 1)) {
+		for (MIPSInstruction::InstructionName i = MIPSInstruction::J; i <= MIPSInstruction::JUMP_PROCEDURE; i = (MIPSInstruction::InstructionName)(i + 1)) {
 			if (regex_match(line, regex{ instr[i] })) {
 				sregex_iterator it{ line.begin(), line.end(), immRgx };
 				int immediate;
@@ -131,11 +131,18 @@ void MIPSParser::parse(const string& fileName) {
 					ss << hex << immStr.substr(2, immStr.length() - 2);
 					ss >> immediate;
 				}
-				instruction.setJType(i, immediate);
+				instruction.setJType(line, i, immediate);
 				instructions.push_back(instruction);
 				matchesRgx = true;
 				break;
 			}
+		}
+		if (matchesRgx)
+			continue;
+		if (regex_match(line, regex{ instr[MIPSInstruction::RETURN_PROCEDURE] })) {
+			instruction.setJType(line, MIPSInstruction::RETURN_PROCEDURE);
+			instructions.push_back(instruction);
+			matchesRgx = true;
 		}
 		if (!matchesRgx)
 			throw runtime_error("Invalid instruction: " + line);

@@ -1,38 +1,26 @@
-//
-//  InstructionMemory.h
-//  ComputerArchitecture
-//
-//  Created by Baher Mursi on 5/11/16.
-//  Copyright (c) 2016 Baher Mursi. All rights reserved.
-//
+#ifndef INSTRUCTION_MEMORY_H
+#define INSTRUCTION_MEMORY_H
 
-#ifndef __ComputerArchitecture__InstructionMemory__
-#define __ComputerArchitecture__InstructionMemory__
-
-#include <stdio.h>
 #include <vector>
 #include "MIPSInstruction.h"
-#include "ControlUnit.h"
-#include "RegFile.h"
-#include "ALU.h"
-#include "Mux2.h"
-class InstructionMemory{
-    
-    
+#include "Object.h"
+
+class InstructionMemory : public Object {
+
 public:
-    InstructionMemory(std::vector<MIPSInstruction>);
-    ~InstructionMemory();
+
+    InstructionMemory(const std::vector<MIPSInstruction>&);
+
     void setAddress(int);
-    void setAdderMux(Mux2*);
+
     void execute();
+
 private:
     
-    std::vector<MIPSInstruction> Instructions;
-    int address, branchAdder1, branchAdder2;
-    Mux2 *mux,*regMux, *aluMux, *adderMux;
-    ControlUnit *ctrlUnit;
-    RegFile *regFile;
-    ALU *alu;
-    
+    std::vector<MIPSInstruction> instructions;
+
+	int address;
+	
+	MIPSInstruction out;
 };
 #endif /* defined(__ComputerArchitecture__InstructionMemory__) */

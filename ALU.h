@@ -1,35 +1,27 @@
-//
-//  ALU.h
-//  ComputerArchitecture
-//
-//  Created by Baher Mursi on 5/11/16.
-//  Copyright (c) 2016 Baher Mursi. All rights reserved.
-//
+#ifndef ALU_H
+#define ALU_H
 
-#ifndef __ComputerArchitecture__ALU__
-#define __ComputerArchitecture__ALU__
-
-#include <stdio.h>
 #include "MIPSInstruction.h"
-#include "DataMemory.h"
-#include "Mux2.h"
-class ALU{
-    
+#include "Object.h"
+class ALU : public Object {
+
 public:
-    ALU();
-    ~ALU();
+
     void execute();
+
     int getAlutResult();
-    void setSource1(int);
-    void setMux2(Mux2*);
-    void setFinalMux(Mux2*);
+
+	void setSource1(int);
+
+	void setSource2(int);
+
     void setInstruction(MIPSInstruction::InstructionName);
-    void setDataMemory(DataMemory*);
+
 private:
-    DataMemory *dataMemory;
-    Mux2 *mux2, *finalMux;
-    MIPSInstruction::InstructionName instruction;
-    int source1, source2, zero, result;
-    
+
+	int source1, source2, zero, result;
+
+	MIPSInstruction::InstructionName instruction;
 };
-#endif /* defined(__ComputerArchitecture__ALU__) */
+
+#endif
