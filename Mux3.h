@@ -1,42 +1,54 @@
-//
-//  Mux3.h
-//  ComputerArchitecture
-//
-//  Created by Baher Mursi on 5/12/16.
-//  Copyright (c) 2016 Baher Mursi. All rights reserved.
-//
+#ifndef MUX_3_H
+#define MUX_3_H
 
-#ifndef __ComputerArchitecture__Mux3__
-#define __ComputerArchitecture__Mux3__
+#include "ALU.h"
 
-#include <stdio.h>
-class Mux3{
+class Mux3 {
     
 public:
-    Mux3(){
-    }
-    ~Mux3(){
+    Mux3(int i) {
+		idx = i;
     }
     
-    void setI0(int i){
-        I0 = i;
-    }
+	void setI0(int i){
+		I0 = i;
+	}
     void setI1(int i){
         I1 = i;
     }
+
     void setI2(int i){
         I2 = i;
     }
+
     void setS(int i){
         S = i;
     }
     
-    int getOut() const{
-        return (S == 0? I0 : S == 1? I1 : I2);
-    }
-    
+	void setALU(ALU* a) {
+		alu = a;
+	}
+
+	void execute() {
+		int out = (S == 2) ? I2 : (S == 1) ? I1 : I0;
+		switch (idx)
+		{
+		case 0:
+			alu->setSource1(out);
+			break;
+		default:
+			alu->setSource2(out);
+			break;
+		}
+	}
+
 private:
-    int I0,I1,I2,S;
+
+	int idx;
+
+    int I0, I1, I2, S;
+
+	ALU* alu;
 };
 
-#endif /* defined(__ComputerArchitecture__Mux3__) */
+#endif

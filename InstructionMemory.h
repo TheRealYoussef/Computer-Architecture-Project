@@ -3,9 +3,10 @@
 
 #include <vector>
 #include "MIPSInstruction.h"
-#include "Object.h"
+#include "Buffer1.h"
+#include "Jump.h"
 
-class InstructionMemory : public Object {
+class InstructionMemory {
 
 public:
 
@@ -15,12 +16,23 @@ public:
 
     void execute();
 
+	void setJump(Jump* j) {
+		jump = j;
+	}
+
+	void setBuffer1(Buffer1* b1) {
+		buffer1 = b1;
+	}
+
 private:
     
     std::vector<MIPSInstruction> instructions;
 
 	int address;
 	
-	MIPSInstruction out;
+	Buffer1* buffer1;
+
+	Jump* jump;
 };
-#endif /* defined(__ComputerArchitecture__InstructionMemory__) */
+
+#endif

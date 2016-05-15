@@ -1,11 +1,14 @@
 #ifndef DATA_MEMORY_H
 #define DATA_MEMORY_H
 
-#include "Object.h"
-
-class DataMemory : public Object {
+class DataMemory {
     
 public:
+
+	DataMemory() {
+		for (int i = 0; i < 16; ++i)
+			memory[i] = 0;
+	}
 
     void execute();
 
@@ -17,7 +20,7 @@ public:
 
 private:
 
-    int memory[16]{0};
+    int memory[16];
 
     int writeData, readData, address, memWrite;
 };

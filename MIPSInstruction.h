@@ -1,6 +1,8 @@
 #ifndef MIPS_INSTRUCTION_H
 #define MIPS_INSTRUCTION_H
 
+#include <string>
+
 class MIPSInstruction {
 
 public:
@@ -53,6 +55,16 @@ public:
 
 	int getImm() const {
 		return i;
+	}
+
+	MIPSInstruction& operator=(const MIPSInstruction& instr) {
+		instructionName = instr.instructionName;
+		s = instr.s;
+		t = instr.t;
+		d = instr.d;
+		i = instr.i;
+		line = instr.line;
+		return *this;
 	}
 
 private:

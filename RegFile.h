@@ -2,13 +2,22 @@
 #define REG_FILE_H
 
 #include "MIPSInstruction.h"
-#include "Object.h"
 
-class RegFile : public Object {
+class Buffer2;
+class RegFile {
 
 public:
 
-    void set(MIPSInstruction mips);
+	RegFile() {
+		for (int i = 0; i < 32; ++i)
+			regs[i] = 0;
+	}
+
+	void setSA(int);
+
+	void setTA(int);
+
+    void execute();
 
 	void setAddress(int);
 
@@ -16,13 +25,19 @@ public:
 
 	void setRegWrite(bool);
 
+	void setBuffer2(Buffer2* b2) {
+		buffer2 = b2;
+	}
+
 private:
 
-    int sD, tD, address;
+    int sA, tA, address;
 
-	int regs[32] = { 0 };
+	int regs[32];
 
-    bool regWrite;  
+    bool regWrite;
+
+	Buffer2* buffer2;
 };
 
 #endif

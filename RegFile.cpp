@@ -1,8 +1,17 @@
 #include "RegFile.h"
+#include "Buffer2.h"
 
-void RegFile:: set(MIPSInstruction mips){
-    tD = regs[mips.getTA()];
-    sD = regs[mips.getSA()];
+void RegFile::setSA(int a) {
+	sA = a;
+}
+
+void RegFile::setTA(int a) {
+	tA = a;
+}
+
+void RegFile::execute() {
+	buffer2->setSD(regs[sA]);
+	buffer2->setTD(regs[tA]);
 }
 
 void RegFile::setAddress(int a) {

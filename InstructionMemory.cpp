@@ -5,7 +5,8 @@ InstructionMemory::InstructionMemory(const std::vector<MIPSInstruction> & instr)
 }
 
 void InstructionMemory:: execute() {
-	out = instructions[address];
+	buffer1->setMipsInstruction(instructions[address]);
+	//add jump set
 }
 
 void InstructionMemory::setAddress(int a){
