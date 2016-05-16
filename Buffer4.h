@@ -5,10 +5,13 @@
 #include "RegFile.h"
 #include "Mux3.h"
 #include "MIPSInstruction.h"
+#include "ForwardingUnit.h"
 
 class Buffer4  {
 
 public:
+
+	Buffer4() : regWrite(0) {}
 
 	void setMemOut(int m) {
 		memOut = m;
@@ -30,13 +33,22 @@ public:
 		regFile = rf;
 	}
 
+	void setTD(int td) {
+		tD = td;
+	}
+
 	void execute() {
 		finalMux->setI0(aluOut);
 		finalMux->setI1(memOut);
+		finalMux->setS(memToReg);
 		source1Mux->setI2(aluOut);
 		source2Mux->setI2(aluOut);
 		dataMemoryMux->setI1(memOut);
 		regFile->setAddress(taOrDa);
+		regFile->setRegWrite(regWrite);
+		forwardingUnit->setPreviousPreviousInstruction(mipsInstruction);
+		forwardingUnit->setPreviousPreviousRegWrite(regWrite);
+		mux3_2->setI2(aluOut);
 	}
 
 
@@ -56,11 +68,31 @@ public:
 		mipsInstruction = instr;
 	}
 
+	void setForwardingUnit(ForwardingUnit* fu) {
+		forwardingUnit = fu;
+	}
+
+	void setRegWrite(int rw) {
+		regWrite = rw;
+	}
+
+	void setMux3_2(Mux3* m3) {
+		mux3_2 = m3;
+	}
+
+	void setMemToReg(int m) {
+		memToReg = m;
+	}
+
 private:
 
 	MIPSInstruction mipsInstruction;
 
-	int memOut, aluOut, taOrDa;
+	int memOut, aluOut, taOrDa, memToReg;
+
+	int regWrite;
+
+	int tD;
 
 	Mux2* finalMux;
 
@@ -71,6 +103,10 @@ private:
 	Mux3* source2Mux;
 
 	Mux2* dataMemoryMux;
+
+	ForwardingUnit* forwardingUnit;
+
+	Mux3* mux3_2;
 };
 
 #endif

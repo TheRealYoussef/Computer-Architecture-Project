@@ -1,8 +1,8 @@
 #ifndef MUX_3_H
 #define MUX_3_H
 
-#include "ALU.h"
-
+class ALU;
+class Buffer3;
 class Mux3 {
     
 public:
@@ -25,22 +25,11 @@ public:
         S = i;
     }
     
-	void setALU(ALU* a) {
-		alu = a;
-	}
+	void setALU(ALU* a);
 
-	void execute() {
-		int out = (S == 2) ? I2 : (S == 1) ? I1 : I0;
-		switch (idx)
-		{
-		case 0:
-			alu->setSource1(out);
-			break;
-		default:
-			alu->setSource2(out);
-			break;
-		}
-	}
+	void execute();
+
+	void setBuffer3(Buffer3*);
 
 private:
 
@@ -49,6 +38,8 @@ private:
     int I0, I1, I2, S;
 
 	ALU* alu;
+
+	Buffer3* buffer3;
 };
 
 #endif

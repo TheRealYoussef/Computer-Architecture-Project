@@ -4,7 +4,7 @@
 #include "Mux3.h"
 
 class ProgramCounter;
-class Buffer3;
+class Buffer2;
 class DataMemory;
 class RegFile;
 class Mux2 {
@@ -33,9 +33,9 @@ public:
 
 	void setProgramCounter(ProgramCounter*);
 
-	void setBuffer3(Buffer3*);
+	void setBuffer2(Buffer2*);
 
-	void setMux3_2(Mux3*);
+	void setMux3_1(Mux3*);
 
 	void setDataMemory(DataMemory*);
 
@@ -51,9 +51,9 @@ private:
 
 	ProgramCounter* programCounter;
 
-	Buffer3* buffer3;
+	Buffer2* buffer2;
 
-	Mux3* mux3_2;
+	Mux3* mux3_1;
 
 	DataMemory* dataMemory;
 

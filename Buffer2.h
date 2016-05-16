@@ -6,10 +6,14 @@
 #include "Mux2.h"
 #include "Mux3.h"
 #include "Adder.h"
+#include "ForwardingUnit.h"
+#include "ALU.h"
 
 class Buffer2 {
 
 public:
+
+	Buffer2() : branch(0), memWrite(0), regWrite(0) {}
 
 	void setMipsInstruction(const MIPSInstruction& instr) {
 		mipsInstruction = instr;
@@ -53,14 +57,20 @@ public:
 
 	void execute() {
 		buffer3->setMipsInstruction(mipsInstruction);
-		buffer3->setTD(tD);
 		buffer3->setTaOrDa(taOrDa);
+		buffer3->setMemToReg(memToReg);
+		buffer3->setMemWrite(memWrite);
+		buffer3->setRegWrite(regWrite);
 		tdOrImmMux->setI0(tD);
 		tdOrImmMux->setI1(mipsInstruction.getImm());
 		tdOrImmMux->setS(aluSrc);
 		source1Mux->setI0(sD);
 		branchAdder->setS1(pcPlus4);
 		branchAdder->setS2(mipsInstruction.getImm());
+		forwardingUnit->setCurrentInstruction(mipsInstruction);
+		alu->setBranch(branch);
+		alu->setInstruction(mipsInstruction.getInstructionName());
+		mux3_2->setI0(tD);
 	}
 
 	void setBuffer3(Buffer3* b3) {
@@ -77,6 +87,19 @@ public:
 
 	void setBranchAdder(Adder* adder) {
 		branchAdder = adder;
+	}
+
+
+	void setForwardingUnit(ForwardingUnit* fu) {
+		forwardingUnit = fu;
+	}
+
+	void setALU(ALU* a) {
+		alu = a;
+	}
+
+	void setMux3_2(Mux3* m3) {
+		mux3_2 = m3;
 	}
 
 private:
@@ -96,6 +119,12 @@ private:
 	Mux3* source1Mux;
 
 	Adder* branchAdder;
+
+	ForwardingUnit* forwardingUnit;
+
+	ALU* alu;
+
+	Mux3* mux3_2;
 };
 
 #endif

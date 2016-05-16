@@ -1,7 +1,7 @@
 #include "ALU.h"
 
 void ALU:: execute() {
-	int result, zero;
+	int result = 0, zero = 0;
 	if (instruction == MIPSInstruction::XOR)
 		result = source1 ^ source2;
 	else if (instruction == MIPSInstruction::OR)

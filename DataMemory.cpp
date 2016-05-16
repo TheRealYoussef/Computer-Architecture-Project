@@ -1,10 +1,11 @@
 #include "DataMemory.h"
 
 void DataMemory::execute() {
-	if (memWrite)
-		memory[address] = writeData;
-	if (address < 16)
-		readData = memory[address];
+	if (address < 16) {
+		if (memWrite)
+			memory[address] = writeData;
+		buffer4->setMemOut(memory[address]);
+	}
 }
 
 void DataMemory::setWriteData(int wr){

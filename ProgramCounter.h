@@ -2,12 +2,11 @@
 #define PROGRAM_COUNTER_H
 
 #include "InstructionMemory.h"
-#include "Object.h"
 #include "Jump.h"
 #include "Buffer1.h"
 #include "Mux2.h"
 
-class ProgramCounter : public Object {
+class ProgramCounter {
     
 public:
 

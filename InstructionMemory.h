@@ -10,7 +10,9 @@ class InstructionMemory {
 
 public:
 
-    InstructionMemory(const std::vector<MIPSInstruction>&);
+	void setInstructions(const std::vector<MIPSInstruction>& inst) {
+		instructions = inst;
+	}
 
     void setAddress(int);
 
@@ -24,6 +26,10 @@ public:
 		buffer1 = b1;
 	}
 
+	bool stop() {
+		return counter == 3;
+	}
+
 private:
     
     std::vector<MIPSInstruction> instructions;
@@ -33,6 +39,8 @@ private:
 	Buffer1* buffer1;
 
 	Jump* jump;
+
+	int counter;
 };
 
 #endif

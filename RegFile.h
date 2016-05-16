@@ -17,7 +17,9 @@ public:
 
 	void setTA(int);
 
-    void execute();
+    void read();
+
+	void write();
 
 	void setAddress(int);
 
@@ -31,7 +33,7 @@ public:
 
 private:
 
-    int sA, tA, address;
+    int sA, tA, address, data;
 
 	int regs[32];
 

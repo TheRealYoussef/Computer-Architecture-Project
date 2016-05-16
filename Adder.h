@@ -19,6 +19,10 @@ public:
 		branchMux->setI1(s1 + s2);
 	}
 
+	void setBranchMux(Mux2* m2) {
+		branchMux = m2;
+	}
+
 private:
 
 	int s1, s2;

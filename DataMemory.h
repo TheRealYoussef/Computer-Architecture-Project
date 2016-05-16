@@ -1,6 +1,8 @@
 #ifndef DATA_MEMORY_H
 #define DATA_MEMORY_H
 
+#include "Buffer4.h"
+
 class DataMemory {
     
 public:
@@ -18,11 +20,17 @@ public:
 
     void setMemWrite(int);
 
+	void setBuffer4(Buffer4* b4) {
+		buffer4 = b4;
+	}
+
 private:
 
     int memory[16];
 
-    int writeData, readData, address, memWrite;
+    int writeData, address, memWrite;
+
+	Buffer4* buffer4;
 };
 
 #endif

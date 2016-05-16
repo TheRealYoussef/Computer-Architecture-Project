@@ -1,11 +1,14 @@
 #include "InstructionMemory.h"
 
-InstructionMemory::InstructionMemory(const std::vector<MIPSInstruction> & instr){
-	instructions = instr;
-}
-
 void InstructionMemory:: execute() {
-	buffer1->setMipsInstruction(instructions[address]);
+	if (address < instructions.size())
+		buffer1->setMipsInstruction(instructions[address]);
+	else {
+		MIPSInstruction temp;
+		temp.setRType("nop", MIPSInstruction::ADD, 0);
+		buffer1->setMipsInstruction(temp);
+		++counter;
+	}
 	//add jump set
 }
 

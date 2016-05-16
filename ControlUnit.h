@@ -9,6 +9,8 @@ class ControlUnit {
 
 public:
 
+	ControlUnit() : receivedInfo(0) {}
+
     void set(MIPSInstruction::InstructionName);
 
 	void execute();
@@ -28,5 +30,7 @@ private:
 	Buffer2* buffer2;
 
 	Mux2* taOrDaMux;
+
+	int receivedInfo;
 };
 #endif

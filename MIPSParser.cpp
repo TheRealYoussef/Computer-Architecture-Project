@@ -71,8 +71,8 @@ void MIPSParser::parse(const string& fileName) {
 			if (regex_match(line, regex{ instr[i] })) {
 				sregex_iterator it1{ line.begin(), line.end(), regRgx };
 				int s, t, immediate;
-				s = regNameToNumber((*(it1++))[0]);
-				t = regNameToNumber((*it1)[0]);
+				t = regNameToNumber((*(it1++))[0]);
+				s = regNameToNumber((*it1)[0]);
 				int comma = line.length() - 1;
 				while (line[comma] != ',')
 					--comma;
