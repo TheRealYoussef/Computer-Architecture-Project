@@ -9,6 +9,7 @@ void ProgramCounter::execute(){
 	//Add jump set
 }
 
-void ProgramCounter::setPC(int counter){
+void ProgramCounter::setPC(int counter) {
+	previousPC = PC;
     PC = counter;
 }

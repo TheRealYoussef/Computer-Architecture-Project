@@ -32,9 +32,13 @@ public:
 		branchMux = m2;
 	}
 
+	void stall() {
+		PC = previousPC;
+	}
+
 private:
 
-    int PC;
+    int PC, previousPC;
 
     InstructionMemory *instructiomMemory;
 

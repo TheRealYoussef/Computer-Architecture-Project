@@ -7,6 +7,7 @@
 #include "DataMemory.h"
 #include "Mux3.h"
 #include "ForwardingUnit.h"
+#include "HazardDetection.h"
 
 class Buffer3 {
 
@@ -53,15 +54,20 @@ public:
 		buffer4->setRegWrite(regWrite);
 		buffer4->setTD(tD);
 		buffer4->setMemToReg(memToReg);
+		buffer4->setDontWrite(dontWrite);
+		buffer4->setDontWrite2(dontWrite2);
+		buffer4->setDontWrite3(dontWrite3);
+		buffer4->setDontWrite4(dontWrite4);
 		dataMemoryMux->setI0(tD);
 		dataMemoryMux->setS(dataMemoryMuxSelection);
 		dataMemory->setAddress(aluOut);
-		dataMemory->setMemWrite(memWrite);
+		dataMemory->setMemWrite(memWrite && !dontWrite && !dontWrite2 && !dontWrite3 && !dontWrite4);
 		source1Mux->setI1(aluOut);
 		source2Mux->setI1(aluOut);
 		forwardingUnit->setPreviousInstruction(mipsInstruction);
 		forwardingUnit->setPreviousRegWrite(regWrite);
 		mux3_2->setI1(aluOut);
+		hazardDetection->setPreviousPreviousInstruction(mipsInstruction);
 	}
 
 	void setBuffer4(Buffer4* b4) {
@@ -92,6 +98,26 @@ public:
 		mux3_2 = m3;
 	}
 
+	void setDontWrite(int dw) {
+		dontWrite = dw;
+	}
+
+	void setDontWrite2(int dw) {
+		dontWrite2 = dw;
+	}
+
+	void setHazardDetection(HazardDetection* hd) {
+		hazardDetection = hd;
+	}
+
+	void setDontWrite3(int dw) {
+		dontWrite3 = dw;
+	}
+
+	void setDontWrite4(int dw) {
+		dontWrite4 = dw;
+	}
+
 private:
 
 	MIPSInstruction mipsInstruction;
@@ -99,6 +125,8 @@ private:
 	int aluOut, tD, taOrDa;
 
 	int memWrite, memToReg, regWrite, dataMemoryMuxSelection;
+
+	int dontWrite, dontWrite2, dontWrite3, dontWrite4;
 
 	Buffer4* buffer4;
 
@@ -113,6 +141,8 @@ private:
 	ForwardingUnit* forwardingUnit;
 
 	Mux3* mux3_2;
+
+	HazardDetection* hazardDetection;
 };
 
 #endif

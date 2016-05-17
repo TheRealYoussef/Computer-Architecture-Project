@@ -3,8 +3,8 @@
 
 #include "MIPSInstruction.h"
 #include "Mux2.h"
-#include "Buffer3.h"
 
+class BranchPrediction;
 class ALU {
 
 public:
@@ -17,23 +17,27 @@ public:
 
     void setInstruction(MIPSInstruction::InstructionName);
 
-	void setBranch(int);
+	void setMux2_7(Mux2*);
 
-	void setMux2_0(Mux2*);
+	void setBranchPrediction(BranchPrediction* branch) {
+		branchPrediction = branch;
+	}
 
-	void setBuffer3(Buffer3*);
+	void setPC(int a) {
+		pc = a;
+	}
 
 private:
+
+	int pc;
 
 	int source1, source2;
 
 	MIPSInstruction::InstructionName instruction;
 
-	int branch;
+	Mux2* mux2_7;
 
-	Mux2* mux2_0;
-
-	Buffer3* buffer3;
+	BranchPrediction* branchPrediction;
 };
 
 #endif

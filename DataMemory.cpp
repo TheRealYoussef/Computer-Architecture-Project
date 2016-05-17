@@ -1,7 +1,7 @@
 #include "DataMemory.h"
 
 void DataMemory::execute() {
-	if (address < 16) {
+	if (address >= 0 && address < 16) {
 		if (memWrite)
 			memory[address] = writeData;
 		buffer4->setMemOut(memory[address]);

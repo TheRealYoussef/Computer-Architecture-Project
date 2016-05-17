@@ -1,4 +1,5 @@
 #include "ALU.h"
+#include "BranchPrediction.h"
 
 void ALU:: execute() {
 	int result = 0, zero = 0;
@@ -18,8 +19,8 @@ void ALU:: execute() {
 		result = source1 < source2;
 	else
 		result = source1 + source2;
-	buffer3->setALUOut(result);
-	mux2_0->setS(zero && branch);
+	mux2_7->setI0(result);
+	branchPrediction->confirmPrediction(pc, zero);
 }
 
 void ALU::setInstruction(MIPSInstruction::InstructionName inst) {
@@ -34,14 +35,6 @@ void ALU::setSource2(int s) {
 	source2 = s;
 }
 
-void ALU::setBranch(int b) {
-	branch = b;
-}
-
-void ALU::setMux2_0(Mux2* m2) {
-	mux2_0 = m2;
-}
-
-void ALU::setBuffer3(Buffer3* b3) {
-	buffer3 = b3;
+void ALU::setMux2_7(Mux2* m2) {
+	mux2_7 = m2;
 }

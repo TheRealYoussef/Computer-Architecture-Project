@@ -2,8 +2,12 @@
 #include "ALU.h"
 #include "Buffer3.h"
 
-void Mux3::setALU(ALU* a) {
-	alu = a;
+void Mux3::setMux2_8(Mux2* m2) {
+	mux2_8 = m2;
+}
+
+void Mux3::setMux2_9(Mux2* m2) {
+	mux2_9 = m2;
 }
 
 void Mux3::execute() {
@@ -11,10 +15,10 @@ void Mux3::execute() {
 	switch (idx)
 	{
 	case 0:
-		alu->setSource1(out);
+		mux2_8->setI0(out);
 		break;
 	case 1:
-		alu->setSource2(out);
+		mux2_9->setI0(out);
 		break;
 	default:
 		buffer3->setTD(out);

@@ -1,7 +1,7 @@
 #ifndef MUX_3_H
 #define MUX_3_H
 
-class ALU;
+class Mux2;
 class Buffer3;
 class Mux3 {
     
@@ -24,12 +24,14 @@ public:
     void setS(int i){
         S = i;
     }
-    
-	void setALU(ALU* a);
 
 	void execute();
 
 	void setBuffer3(Buffer3*);
+
+	void setMux2_8(Mux2*);
+
+	void setMux2_9(Mux2*);
 
 private:
 
@@ -37,9 +39,11 @@ private:
 
     int I0, I1, I2, S;
 
-	ALU* alu;
-
 	Buffer3* buffer3;
+
+	Mux2* mux2_8;
+
+	Mux2* mux2_9;
 };
 
 #endif

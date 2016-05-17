@@ -1,40 +1,61 @@
 #include "CPU.h"
 #include "MIPSParser.h"
 
-CPU::CPU() : mux2_0(0), mux2_1(1), mux2_2(2), mux2_3(3), mux2_4(4), mux2_5(5), mux3_0(0), mux3_1(1), mux3_2(2) {
+CPU::CPU() : mux2_0(0), mux2_1(1), mux2_2(2), mux2_3(3), mux2_4(4), mux2_5(5), mux2_6(6), mux2_7(7), mux2_8(8), mux2_9(9), mux3_0(0), mux3_1(1), mux3_2(2) {
 	mux2_0.setMux2_1(&mux2_1);
-	mux2_0.setProgramCounter(&programCounter);
-	//mux2_1.setProgramCounter(&programCounter);
+	mux2_1.setProgramCounter(&programCounter);
 	programCounter.setInstructionMemory(&instructionMemory);
 	programCounter.setBuffer1(&buffer1);
 	programCounter.setBranchMux(&mux2_0);
 	instructionMemory.setBuffer1(&buffer1);
+	instructionMemory.setBranchPrediction(&branchPrediction);
+	branchPrediction.setConfirmedNextAddress(&confirmedNextAddress);
+	branchPrediction.setMux2_0(&mux2_0);
+	branchPrediction.setBuffer1(&buffer1);
+	branchPrediction.setBuffer2(&buffer2);
+	branchPrediction.setJump(&jump);
+	confirmedNextAddress.setProgramCounter(&programCounter);
 	buffer1.setBuffer2(&buffer2);
 	buffer1.setControlUnit(&controlUnit);
 	buffer1.setRegFile(&regFile);
 	buffer1.setTAOrDAMux(&mux2_2);
+	buffer1.setJump(&jump);
+	buffer1.setHazardDetection(&hazardDetection);
 	controlUnit.setBuffer2(&buffer2);
 	controlUnit.setTAOrDAMux(&mux2_2);
 	regFile.setBuffer2(&buffer2);
-	mux2_2.setBuffer2(&buffer2);
-	buffer2.setBranchAdder(&adder);
+	jump.setBuffer1(&buffer1);
+	jump.setBuffer2(&buffer2);
+	jump.setMux2_1(&mux2_1);
+	jump.setMux2_6(&mux2_6);
+	regFile.setJump(&jump);
+	mux2_2.setMux2_6(&mux2_6);
+	mux2_6.setBuffer2(&buffer2);
+	hazardDetection.setBuffer2(&buffer2);
+	hazardDetection.setProgramCounter(&programCounter);
 	buffer2.setBuffer3(&buffer3);
 	buffer2.setForwardingUnit(&forwardingUnit);
 	buffer2.setSource1Mux(&mux3_0);
 	buffer2.setTDOrImmMux(&mux2_3);
 	buffer2.setALU(&alu);
 	buffer2.setMux3_2(&mux3_2);
+	buffer2.setMux2_7(&mux2_7);
+	buffer2.setHazardDetection(&hazardDetection);
 	mux2_3.setMux3_1(&mux3_1);
-	mux3_0.setALU(&alu);
-	mux3_1.setALU(&alu);
+	mux3_0.setMux2_8(&mux2_8);
+	mux3_1.setMux2_9(&mux2_9);
+	mux2_8.setALU(&alu);
+	mux2_9.setALU(&alu);
 	mux3_2.setBuffer3(&buffer3);
-	adder.setBranchMux(&mux2_0);
-	alu.setBuffer3(&buffer3);
-	alu.setMux2_0(&mux2_0);
+	alu.setMux2_7(&mux2_7);
+	alu.setBranchPrediction(&branchPrediction);
+	mux2_7.setBuffer3(&buffer3);
 	forwardingUnit.setBuffer3(&buffer3);
 	forwardingUnit.setMux3_0(&mux3_0);
 	forwardingUnit.setMux3_1(&mux3_1);
 	forwardingUnit.setMux3_2(&mux3_2);
+	forwardingUnit.setMux2_8(&mux2_8);
+	forwardingUnit.setMux2_9(&mux2_9);
 	buffer3.setBuffer4(&buffer4);
 	buffer3.setDataMemory(&dataMemory);
 	buffer3.setDataMemoryMux(&mux2_4);
@@ -42,6 +63,7 @@ CPU::CPU() : mux2_0(0), mux2_1(1), mux2_2(2), mux2_3(3), mux2_4(4), mux2_5(5), m
 	buffer3.setSource1Mux(&mux3_0);
 	buffer3.setSource2Mux(&mux3_1);
 	buffer3.setMux3_2(&mux3_2);
+	buffer3.setHazardDetection(&hazardDetection);
 	mux2_4.setDataMemory(&dataMemory);
 	dataMemory.setBuffer4(&buffer4);
 	buffer4.setDataMemoryMux(&mux2_4);
@@ -51,6 +73,8 @@ CPU::CPU() : mux2_0(0), mux2_1(1), mux2_2(2), mux2_3(3), mux2_4(4), mux2_5(5), m
 	buffer4.setSource1Mux(&mux3_0);
 	buffer4.setSource2Mux(&mux3_1);
 	buffer4.setMux3_2(&mux3_2);
+	buffer4.setMux2_8(&mux2_8);
+	buffer4.setMux2_9(&mux2_9);
 	mux2_5.setRegFile(&regFile);
 	MIPSParser parser;
 	parser.parse("test.txt");
@@ -66,20 +90,27 @@ void CPU::execute() {
 		mux2_4.execute();
 		dataMemory.execute();
 		buffer2.execute();
-		adder.execute();
 		forwardingUnit.execute();
 		mux2_3.execute();
 		mux3_0.execute();
 		mux3_1.execute();
+		mux2_8.execute();
+		mux2_9.execute();
 		alu.execute();
+		mux2_7.execute();
 		mux3_2.execute();
 		buffer1.execute();
+		hazardDetection.execute();
 		controlUnit.execute();
 		mux2_2.execute();
 		regFile.read();
+		jump.execute();
+		mux2_6.execute();
 		programCounter.execute();
 		mux2_0.execute();
-		//mux2_1.execute();
+		mux2_1.execute();
+		branchPrediction.execute();
+		confirmedNextAddress.execute();
 		instructionMemory.execute();
 	}
 }

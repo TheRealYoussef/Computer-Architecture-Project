@@ -5,9 +5,9 @@
 #include "Buffer3.h"
 #include "Mux2.h"
 #include "Mux3.h"
-#include "Adder.h"
 #include "ForwardingUnit.h"
 #include "ALU.h"
+#include "HazardDetection.h"
 
 class Buffer2 {
 
@@ -61,16 +61,21 @@ public:
 		buffer3->setMemToReg(memToReg);
 		buffer3->setMemWrite(memWrite);
 		buffer3->setRegWrite(regWrite);
+		buffer3->setDontWrite(dontWrite);
+		buffer3->setDontWrite2(dontWrite2);
+		buffer3->setDontWrite3(dontWrite3);
+		buffer3->setDontWrite4(dontWrite4);
 		tdOrImmMux->setI0(tD);
 		tdOrImmMux->setI1(mipsInstruction.getImm());
 		tdOrImmMux->setS(aluSrc);
 		source1Mux->setI0(sD);
-		branchAdder->setS1(pcPlus4);
-		branchAdder->setS2(mipsInstruction.getImm());
 		forwardingUnit->setCurrentInstruction(mipsInstruction);
-		alu->setBranch(branch);
+		alu->setPC(pcPlus4 - 1);
 		alu->setInstruction(mipsInstruction.getInstructionName());
 		mux3_2->setI0(tD);
+		mux2_7->setI1(pcPlus4);
+		mux2_7->setS(selectPCPlus4);
+		hazardDetection->setPreviousInstruction(mipsInstruction);
 	}
 
 	void setBuffer3(Buffer3* b3) {
@@ -85,11 +90,6 @@ public:
 		source1Mux = s1;
 	}
 
-	void setBranchAdder(Adder* adder) {
-		branchAdder = adder;
-	}
-
-
 	void setForwardingUnit(ForwardingUnit* fu) {
 		forwardingUnit = fu;
 	}
@@ -102,6 +102,34 @@ public:
 		mux3_2 = m3;
 	}
 
+	void setDontWrite(int dw) {
+		dontWrite = dw;
+	}
+
+	void setMux2_7(Mux2* m2) {
+		mux2_7 = m2;
+	}
+
+	void setSelectPCPlus4(int s) {
+		selectPCPlus4 = s;
+	}
+
+	void setDontWrite2(int dw) {
+		dontWrite2 = dw;
+	}
+
+	void setHazardDetection(HazardDetection* hd) {
+		hazardDetection = hd;
+	}
+
+	void setDontWrite3(int dw) {
+		dontWrite3 = dw;
+	}
+
+	void setDontWrite4(int dw) {
+		dontWrite4 = dw;
+	}
+
 private:
 
 	MIPSInstruction mipsInstruction;
@@ -112,19 +140,25 @@ private:
 
 	int branch, memWrite, memToReg, aluSrc, regWrite;
 
+	int dontWrite, selectPCPlus4;
+
+	int dontWrite2, dontWrite3, dontWrite4;
+
 	Buffer3* buffer3;
 
 	Mux2* tdOrImmMux;
 
 	Mux3* source1Mux;
 
-	Adder* branchAdder;
-
 	ForwardingUnit* forwardingUnit;
 
 	ALU* alu;
 
 	Mux3* mux3_2;
+
+	Mux2* mux2_7;
+
+	HazardDetection* hazardDetection;
 };
 
 #endif

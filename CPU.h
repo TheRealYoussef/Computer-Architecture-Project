@@ -3,6 +3,10 @@
 
 #include "ProgramCounter.h"
 #include "ALU.h"
+#include "Jump.h"
+#include "HazardDetection.h"
+#include "ConfirmedNextAddress.h"
+#include "BranchPrediction.h"
 
 class CPU {
 
@@ -14,7 +18,7 @@ public:
 
 private:
 
-	Mux2 mux2_0, mux2_1, mux2_2, mux2_3, mux2_4, mux2_5;
+	Mux2 mux2_0, mux2_1, mux2_2, mux2_3, mux2_4, mux2_5, mux2_6, mux2_7, mux2_8, mux2_9;
 
 	Mux3 mux3_0, mux3_1, mux3_2;
 
@@ -40,7 +44,13 @@ private:
 
 	DataMemory dataMemory;
 
-	Adder adder;
+	Jump jump;
+
+	HazardDetection hazardDetection;
+
+	BranchPrediction branchPrediction;
+
+	ConfirmedNextAddress confirmedNextAddress;
 };
 
 #endif

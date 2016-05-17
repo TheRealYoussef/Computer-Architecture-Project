@@ -7,6 +7,8 @@ class ProgramCounter;
 class Buffer2;
 class DataMemory;
 class RegFile;
+class Buffer3;
+class ALU;
 class Mux2 {
     
 public:
@@ -41,6 +43,12 @@ public:
 
 	void setRegFile(RegFile*);
 
+	void setMux2_6(Mux2*);
+
+	void setBuffer3(Buffer3*);
+
+	void setALU(ALU*);
+
 private:
 
 	int idx;
@@ -58,6 +66,12 @@ private:
 	DataMemory* dataMemory;
 
 	RegFile* regFile;
+
+	Mux2* mux2_6;
+
+	Buffer3* buffer3;
+
+	ALU* alu;
 };
 
 #endif

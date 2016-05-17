@@ -6,6 +6,7 @@
 #include "Buffer1.h"
 #include "Jump.h"
 
+class BranchPrediction;
 class InstructionMemory {
 
 public:
@@ -30,6 +31,10 @@ public:
 		return counter == 3;
 	}
 
+	void setBranchPrediction(BranchPrediction* bp) {
+		branchPrediction = bp;
+	}
+
 private:
     
     std::vector<MIPSInstruction> instructions;
@@ -41,6 +46,8 @@ private:
 	Jump* jump;
 
 	int counter;
+
+	BranchPrediction* branchPrediction;
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "MIPSInstruction.h"
 #include "Mux3.h"
+#include "Mux2.h"
 
 class Buffer3;
 class ForwardingUnit {
@@ -45,6 +46,14 @@ public:
 		previousPreviousRegWrite = rw;
 	}
 
+	void setMux2_8(Mux2* m2) {
+		mux2_8 = m2;
+	}
+
+	void setMux2_9(Mux2* m2) {
+		mux2_9 = m2;
+	}
+
 private:
 
 	MIPSInstruction currentInstruction, previousInstruction, previousPreviousInstruction;
@@ -58,6 +67,10 @@ private:
 	Buffer3* buffer3;
 
 	Mux3* mux3_2;
+
+	Mux2* mux2_8;
+
+	Mux2* mux2_9;
 };
 
 #endif

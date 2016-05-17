@@ -10,8 +10,12 @@ void RegFile::setTA(int a) {
 }
 
 void RegFile::read() {
-	buffer2->setSD(regs[sA]);
-	buffer2->setTD(regs[tA]);
+	if (sA >= 0 && sA < 32) {
+		buffer2->setSD(regs[sA]);
+		jump->setSD(regs[sA]);
+	}
+	if (tA >= 0 && tA < 32)
+		buffer2->setTD(regs[tA]);
 }
 
 void RegFile::write() {

@@ -2,6 +2,7 @@
 #define REG_FILE_H
 
 #include "MIPSInstruction.h"
+#include "Jump.h"
 
 class Buffer2;
 class RegFile {
@@ -31,6 +32,10 @@ public:
 		buffer2 = b2;
 	}
 
+	void setJump(Jump* j) {
+		jump = j;
+	}
+
 private:
 
     int sA, tA, address, data;
@@ -40,6 +45,8 @@ private:
     bool regWrite;
 
 	Buffer2* buffer2;
+
+	Jump* jump;
 };
 
 #endif
