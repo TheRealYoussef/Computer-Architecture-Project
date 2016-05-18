@@ -47,6 +47,10 @@ public:
 		stop = true;
 	}
 
+	std::stack<int> getStack() const {
+		return st;
+	}
+
 private:
 
 	bool stop;

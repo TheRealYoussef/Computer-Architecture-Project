@@ -5,6 +5,7 @@
 #include "MIPSInstruction.h"
 #include "Buffer1.h"
 #include "Jump.h"
+#include "TimingDiagram.h"
 
 class BranchPrediction;
 class InstructionMemory {
@@ -15,9 +16,9 @@ public:
 		instructions = inst;
 	}
 
-    void setAddress(int);
+	void setAddress(int);
 
-    void execute();
+	void execute();
 
 	void setJump(Jump* j) {
 		jump = j;
@@ -35,6 +36,21 @@ public:
 		branchPrediction = bp;
 	}
 
+	std::string getInstruction() const {
+		if (address < instructions.size())
+			return instructions[address].getLine();
+		else
+			return "nop";
+	}
+
+	int getAddress() const {
+		return address;
+	}
+
+	void setTimingDiagram(TimingDiagram* td) {
+		timingDiagram = td;
+	}
+
 private:
     
     std::vector<MIPSInstruction> instructions;
@@ -48,6 +64,8 @@ private:
 	int counter;
 
 	BranchPrediction* branchPrediction;
+
+	TimingDiagram* timingDiagram;
 };
 
 #endif

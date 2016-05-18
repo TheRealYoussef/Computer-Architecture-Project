@@ -65,9 +65,10 @@ public:
 		source1Mux->setI1(aluOut);
 		source2Mux->setI1(aluOut);
 		forwardingUnit->setPreviousInstruction(mipsInstruction);
-		forwardingUnit->setPreviousRegWrite(regWrite);
+		forwardingUnit->setPreviousRegWrite(regWrite && !dontWrite && !dontWrite2 && !dontWrite3 && !dontWrite4);
 		mux3_2->setI1(aluOut);
 		hazardDetection->setPreviousPreviousInstruction(mipsInstruction);
+		hazardDetection->setPreviousPreviousRegWrite(regWrite && !dontWrite && !dontWrite2 && !dontWrite3 && !dontWrite4);
 	}
 
 	void setBuffer4(Buffer4* b4) {

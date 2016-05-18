@@ -3,7 +3,7 @@
 #include "Buffer2.h"
 
 void HazardDetection::execute() {
-	if (previousInstruction.getInstructionName() == MIPSInstruction::LW) {
+	if (previousRegWrite && previousInstruction.getInstructionName() == MIPSInstruction::LW) {
 		if (currentInstruction.getInstructionName() == MIPSInstruction::ADD || currentInstruction.getInstructionName() == MIPSInstruction::SUB || currentInstruction.getInstructionName() == MIPSInstruction::OR || currentInstruction.getInstructionName() == MIPSInstruction::XOR || currentInstruction.getInstructionName() == MIPSInstruction::SLT || currentInstruction.getInstructionName() == MIPSInstruction::BEQ || currentInstruction.getInstructionName() == MIPSInstruction::BNE || currentInstruction.getInstructionName() == MIPSInstruction::BLE) {
 			if (previousInstruction.getTA() == currentInstruction.getSA() || previousInstruction.getTA() == currentInstruction.getTA()) {
 				buffer2->setDontWrite2(1);
@@ -24,6 +24,7 @@ void HazardDetection::execute() {
 			if (previousInstruction.getTA() == currentInstruction.getSA()) {
 				buffer2->setDontWrite2(1);
 				programCounter->stall();
+				jump->STOP();
 			}
 			else
 				buffer2->setDontWrite2(0);
@@ -31,11 +32,12 @@ void HazardDetection::execute() {
 		else
 			buffer2->setDontWrite2(0);
 	}
-	else if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::LW) {
+	else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::LW) {
 		if (currentInstruction.getInstructionName() == MIPSInstruction::JR) {
 			if (previousPreviousInstruction.getTA() == currentInstruction.getSA()) {
 				buffer2->setDontWrite2(1);
 				programCounter->stall();
+				jump->STOP();
 			}
 			else
 				buffer2->setDontWrite2(0);

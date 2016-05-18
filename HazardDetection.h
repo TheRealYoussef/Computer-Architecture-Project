@@ -5,6 +5,7 @@
 
 class Buffer2;
 class ProgramCounter;
+class Jump;
 class HazardDetection {
 
 public:
@@ -29,15 +30,31 @@ public:
 		previousPreviousInstruction = instr;
 	}
 
+	void setJump(Jump* j) {
+		jump = j;
+	}
+
 	void execute();
+
+	void setPreviousRegWrite(int rw) {
+		previousRegWrite = rw;
+	}
+
+	void setPreviousPreviousRegWrite(int rw) {
+		previousPreviousRegWrite = rw;
+	}
 
 private:
 
 	MIPSInstruction currentInstruction, previousInstruction, previousPreviousInstruction;
 
+	int previousRegWrite, previousPreviousRegWrite;
+
 	Buffer2* buffer2;
 
 	ProgramCounter* programCounter;
+
+	Jump* jump;
 };
 
 #endif

@@ -47,7 +47,7 @@ public:
 		regFile->setAddress(taOrDa);
 		regFile->setRegWrite(regWrite && !dontWrite && !dontWrite2 && !dontWrite3 && !dontWrite4);
 		forwardingUnit->setPreviousPreviousInstruction(mipsInstruction);
-		forwardingUnit->setPreviousPreviousRegWrite(regWrite);
+		forwardingUnit->setPreviousPreviousRegWrite(regWrite && !dontWrite && !dontWrite2 && !dontWrite3 && !dontWrite4);
 		mux3_2->setI2(aluOut);
 		mux2_8->setI1(memOut);
 		mux2_9->setI1(memOut);

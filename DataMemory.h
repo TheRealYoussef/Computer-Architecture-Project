@@ -8,7 +8,7 @@ class DataMemory {
 public:
 
 	DataMemory() {
-		for (int i = 0; i < 16; ++i)
+		for (int i = 0; i < 32; ++i)
 			memory[i] = 0;
 	}
 
@@ -24,9 +24,13 @@ public:
 		buffer4 = b4;
 	}
 
+	int* getMemory() {
+		return memory;
+	}
+
 private:
 
-    int memory[16];
+    int memory[32];
 
     int writeData, address, memWrite;
 

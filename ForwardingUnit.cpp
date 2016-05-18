@@ -5,47 +5,47 @@ void ForwardingUnit::execute() {
 	int f0 = 0, f1 = 0, f2 = 0, f3 = 0, f4 = 0, f5 = 0;
 	f2 = (currentInstruction.getInstructionName() == MIPSInstruction::SW && previousInstruction.getInstructionName() == MIPSInstruction::LW && currentInstruction.getTA() == previousInstruction.getTA());
 	if (currentInstruction.getInstructionName() != MIPSInstruction::J && currentInstruction.getInstructionName() != MIPSInstruction::JAL && currentInstruction.getInstructionName() != MIPSInstruction::JUMP_PROCEDURE && currentInstruction.getInstructionName() != MIPSInstruction::RETURN_PROCEDURE) {
-		if (previousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getSA() == previousInstruction.getTA())
+		if (previousRegWrite && previousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getSA() == previousInstruction.getTA())
 			f0 = 1;
-		else if (previousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getSA() == 31)
+		else if (previousRegWrite && previousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getSA() == 31)
 			f0 = 1;
 		else if (previousRegWrite && previousInstruction.getInstructionName() != MIPSInstruction::ADDI && previousInstruction.getInstructionName() != MIPSInstruction::JAL && currentInstruction.getSA() == previousInstruction.getDA())
 			f0 = 1;
-		else if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getSA() == previousPreviousInstruction.getTA())
+		else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getSA() == previousPreviousInstruction.getTA())
 			f0 = 2;
-		else if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getSA() == 31)
+		else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getSA() == 31)
 			f0 = 2;
 		else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() != MIPSInstruction::ADDI && previousPreviousInstruction.getInstructionName() != MIPSInstruction::JAL && currentInstruction.getSA() == previousPreviousInstruction.getDA())
 			f0 = 2;
-		if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::LW && currentInstruction.getSA() == previousPreviousInstruction.getTA())
+		if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::LW && currentInstruction.getSA() == previousPreviousInstruction.getTA())
 			f4 = 1;
 		if (currentInstruction.getInstructionName() != MIPSInstruction::JR && currentInstruction.getInstructionName() != MIPSInstruction::ADDI && currentInstruction.getInstructionName() != MIPSInstruction::LW && currentInstruction.getInstructionName() != MIPSInstruction::SW) {
-			if (previousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousInstruction.getTA())
+			if (previousRegWrite && previousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousInstruction.getTA())
 				f1 = 1;
-			else if (previousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
+			else if (previousRegWrite && previousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
 				f1 = 1;
 			else if (previousRegWrite && previousInstruction.getInstructionName() != MIPSInstruction::ADDI && previousInstruction.getInstructionName() != MIPSInstruction::JAL && currentInstruction.getTA() == previousInstruction.getDA())
 				f1 = 1;
-			else if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousPreviousInstruction.getTA())
+			else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousPreviousInstruction.getTA())
 				f1 = 2;
-			else if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
+			else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
 				f1 = 2;
 			else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() != MIPSInstruction::ADDI && previousPreviousInstruction.getInstructionName() != MIPSInstruction::JAL && currentInstruction.getTA() == previousPreviousInstruction.getDA())
 				f1 = 2;
-			if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::LW && currentInstruction.getTA() == previousPreviousInstruction.getTA())
+			if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::LW && currentInstruction.getTA() == previousPreviousInstruction.getTA())
 				f5 = 1;
 		}
 	}
 	if (currentInstruction.getInstructionName() == MIPSInstruction::SW) {
-		if (previousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousInstruction.getTA())
+		if (previousRegWrite && previousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousInstruction.getTA())
 			f3 = 1;
-		else if (previousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
+		else if (previousRegWrite && previousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
 			f3 = 1;
 		else if (previousRegWrite && previousInstruction.getInstructionName() != MIPSInstruction::ADDI && previousInstruction.getInstructionName() != MIPSInstruction::JAL && previousInstruction.getInstructionName() != MIPSInstruction::LW && currentInstruction.getTA() == previousInstruction.getDA())
 			f3 = 1;
-		else if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousPreviousInstruction.getTA())
+		else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::ADDI && currentInstruction.getTA() == previousPreviousInstruction.getTA())
 			f3 = 2;
-		else if (previousPreviousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
+		else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() == MIPSInstruction::JAL && currentInstruction.getTA() == 31)
 			f3 = 2;
 		else if (previousPreviousRegWrite && previousPreviousInstruction.getInstructionName() != MIPSInstruction::ADDI && previousPreviousInstruction.getInstructionName() != MIPSInstruction::JAL && previousPreviousInstruction.getInstructionName() != MIPSInstruction::LW && currentInstruction.getTA() == previousPreviousInstruction.getDA())
 			f3 = 2;

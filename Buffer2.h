@@ -8,6 +8,7 @@
 #include "ForwardingUnit.h"
 #include "ALU.h"
 #include "HazardDetection.h"
+#include "BranchPrediction.h"
 
 class Buffer2 {
 
@@ -76,6 +77,8 @@ public:
 		mux2_7->setI1(pcPlus4);
 		mux2_7->setS(selectPCPlus4);
 		hazardDetection->setPreviousInstruction(mipsInstruction);
+		hazardDetection->setPreviousRegWrite(regWrite && !dontWrite && !dontWrite2 && !dontWrite3 && !dontWrite4);
+		branchPrediction->setWrite(!dontWrite && !dontWrite2 && !dontWrite3 && !dontWrite4);
 	}
 
 	void setBuffer3(Buffer3* b3) {
@@ -130,6 +133,10 @@ public:
 		dontWrite4 = dw;
 	}
 
+	void setBranchPrediction(BranchPrediction* bp) {
+		branchPrediction = bp;
+	}
+
 private:
 
 	MIPSInstruction mipsInstruction;
@@ -159,6 +166,8 @@ private:
 	Mux2* mux2_7;
 
 	HazardDetection* hazardDetection;
+
+	BranchPrediction* branchPrediction;
 };
 
 #endif

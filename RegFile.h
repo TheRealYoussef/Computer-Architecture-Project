@@ -36,6 +36,10 @@ public:
 		jump = j;
 	}
 
+	int* getRegisters() {
+		return regs;
+	}
+
 private:
 
     int sA, tA, address, data;
