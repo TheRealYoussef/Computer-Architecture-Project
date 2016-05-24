@@ -29,7 +29,7 @@ void Jump::execute() {
 			if (st.size() < 4)
 				st.push(pcPlus4);
 			else
-				throw std::runtime_error("4-entry stack size exceeded");
+                error1 = true;
 			mux2_1->setI1(mipsInstruction.getImm());
 			mux2_1->setS(1);
 			buffer1->setDontWrite(1);
@@ -42,7 +42,7 @@ void Jump::execute() {
 				st.pop();
 			}
 			else
-				throw std::runtime_error("4-entry stack is empty");
+                error2 = true;
 			mux2_1->setI1(address);
 			mux2_1->setS(1);
 			buffer1->setDontWrite(1);

@@ -7,6 +7,8 @@ class ConfirmedNextAddress {
 
 public:
 
+    ConfirmedNextAddress() : address(0) {}
+
 	void setAddress(int a) {
 		address = a;
 		set = true;

@@ -11,7 +11,7 @@ public:
 
 	MIPSParser();
 
-	void parse(const std::string& fileName);
+    std::vector<int> parse(const std::string& fileName);
 
 	std::vector<MIPSInstruction> getInstructions() const {
 		return instructions;

@@ -1,7 +1,5 @@
 #include "ProgramCounter.h"
 
-ProgramCounter:: ProgramCounter() : PC(0) {}
-
 void ProgramCounter::execute(){
     instructiomMemory->setAddress(PC);
 	buffer1->setPCPlus4(PC + 1);

@@ -1,6 +1,5 @@
 #ifndef CPU_H
 #define CPU_H
-
 #include "ProgramCounter.h"
 #include "ALU.h"
 #include "Jump.h"
@@ -8,50 +7,53 @@
 #include "ConfirmedNextAddress.h"
 #include "BranchPrediction.h"
 #include "TimingDiagram.h"
+#include "MIPSParser.h"
 
 class CPU {
 
 public:
 
-	CPU();
+    CPU();
 
-	void execute();
+    void execute();
 
-	Mux2 mux2_0, mux2_1, mux2_2, mux2_3, mux2_4, mux2_5, mux2_6, mux2_7, mux2_8, mux2_9;
+    void setParser(MIPSParser);
 
-	Mux3 mux3_0, mux3_1, mux3_2;
+    Mux2 mux2_0, mux2_1, mux2_2, mux2_3, mux2_4, mux2_5, mux2_6, mux2_7, mux2_8, mux2_9;
 
-	ProgramCounter programCounter;
+    Mux3 mux3_0, mux3_1, mux3_2;
 
-	InstructionMemory instructionMemory;
+    ProgramCounter programCounter;
 
-	Buffer1 buffer1;
+    InstructionMemory instructionMemory;
 
-	Buffer2 buffer2;
+    Buffer1 buffer1;
 
-	Buffer3 buffer3;
+    Buffer2 buffer2;
 
-	Buffer4 buffer4;
+    Buffer3 buffer3;
 
-	RegFile regFile;
+    Buffer4 buffer4;
 
-	ControlUnit controlUnit;
+    RegFile regFile;
 
-	ForwardingUnit forwardingUnit;
+    ControlUnit controlUnit;
 
-	ALU alu;
+    ForwardingUnit forwardingUnit;
 
-	DataMemory dataMemory;
+    ALU alu;
 
-	Jump jump;
+    DataMemory dataMemory;
 
-	HazardDetection hazardDetection;
+    Jump jump;
 
-	BranchPrediction branchPrediction;
+    HazardDetection hazardDetection;
 
-	ConfirmedNextAddress confirmedNextAddress;
+    BranchPrediction branchPrediction;
 
-	TimingDiagram timingDiagram;
+    ConfirmedNextAddress confirmedNextAddress;
+
+    TimingDiagram timingDiagram;
 };
 
 #endif

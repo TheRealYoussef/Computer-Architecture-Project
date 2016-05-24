@@ -13,7 +13,7 @@ class Mux2 {
     
 public:
 
-	Mux2(int i) {
+    Mux2(int i) : I0(0), I1(0), S(0) {
 		idx = i;
 	}
 

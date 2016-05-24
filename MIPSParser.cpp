@@ -7,7 +7,7 @@
 using namespace std;
 
 MIPSParser::MIPSParser() {
-	ifstream cin{ "Regular Expressions.rgx" };
+    ifstream cin("/Users/bahermursi/Desktop/ComputerArchitectureUI/Regular Expressions.rgx");
 	getline(cin, regNum);
 	getline(cin, regName);
 	reg = "(\\$(" + regNum + "|" + regName + "))";
@@ -22,16 +22,22 @@ MIPSParser::MIPSParser() {
 		while ((idx = instr[i].find("IMM")) != -1)
 			instr[i].replace(idx, 3, imm);
 	}
+    cin.close();
 }
 
-void MIPSParser::parse(const string& fileName) {
+std::vector<int> MIPSParser::parse(const string& fileName) {
+	vector<int>ret;
+	int lineNumber = -1;
 	ifstream cin{ fileName };
-	if (cin.fail())
-		throw runtime_error{ "Failed to open: " + fileName };
+    if (cin.fail()){
+        cout<< "Failed to open: " + fileName;
+    return ret;
+    }
 	string line;
-	regex regRgx{ reg }, immRgx{ imm }, immDecimalRgx{ immDec };
+    regex regRgx( reg ), immRgx( imm ), immDecimalRgx( immDec );
 	bool lineIsEmpty, matchesRgx;
 	while (!cin.eof()) {
+		++lineNumber;
 		MIPSInstruction instruction;
 		getline(cin, line);
 		lineIsEmpty = true;
@@ -45,8 +51,8 @@ void MIPSParser::parse(const string& fileName) {
 			continue;
 		matchesRgx = false;
 		for (MIPSInstruction::InstructionName i = MIPSInstruction::ADD; i <= MIPSInstruction::SLT; i = (MIPSInstruction::InstructionName)(i + 1)) {
-			if (regex_match(line, regex{ instr[i] })) {
-				sregex_iterator it{ line.begin(), line.end(), regRgx };
+            if (regex_match(line, regex( instr[i] ))) {
+                sregex_iterator it( line.begin(), line.end(), regRgx );
 				int s, t, d;
 				d = regNameToNumber((*(it++))[0]);
 				s = regNameToNumber((*(it++))[0]);
@@ -59,8 +65,8 @@ void MIPSParser::parse(const string& fileName) {
 		}
 		if (matchesRgx)
 			continue;
-		if (regex_match(line, regex{ instr[MIPSInstruction::JR] })) {
-			sregex_iterator it{ line.begin(), line.end(), regRgx };
+        if (regex_match(line, regex( instr[MIPSInstruction::JR] ))) {
+            sregex_iterator it( line.begin(), line.end(), regRgx );
 			int s;
 			s = regNameToNumber((*it)[0]);
 			instruction.setRType(line, MIPSInstruction::JR, s);
@@ -68,8 +74,8 @@ void MIPSParser::parse(const string& fileName) {
 			continue;
 		}
 		for (MIPSInstruction::InstructionName i = MIPSInstruction::ADDI; i <= MIPSInstruction::BLE; i = (MIPSInstruction::InstructionName)(i + 1)) {
-			if (regex_match(line, regex{ instr[i] })) {
-				sregex_iterator it1{ line.begin(), line.end(), regRgx };
+            if (regex_match(line, regex( instr[i] ))) {
+                sregex_iterator it1( line.begin(), line.end(), regRgx );
 				int s, t, immediate;
 				t = regNameToNumber((*(it1++))[0]);
 				s = regNameToNumber((*it1)[0]);
@@ -77,7 +83,7 @@ void MIPSParser::parse(const string& fileName) {
 				while (line[comma] != ',')
 					--comma;
 				string immStr = line.substr(comma + 1, line.length() - comma - 1);
-				sregex_iterator it2{ immStr.begin(), immStr.end(), immRgx };
+                sregex_iterator it2( immStr.begin(), immStr.end(), immRgx );
 				immStr = (*it2)[0];
 				if (regex_match(immStr, immDecimalRgx))
 					immediate = atoi(immStr.c_str());
@@ -95,14 +101,14 @@ void MIPSParser::parse(const string& fileName) {
 		if (matchesRgx)
 			continue;
 		for (MIPSInstruction::InstructionName i = MIPSInstruction::LW; i <= MIPSInstruction::SW; i = (MIPSInstruction::InstructionName)(i + 1)) {
-			if (regex_match(line, regex{ instr[i] })) {
+            if (regex_match(line, regex( instr[i] ))) {
 				sregex_iterator it1{ line.begin(), line.end(), regRgx };
 				int s, t, immediate;
 				t = regNameToNumber((*(it1++))[0]);
 				s = regNameToNumber((*it1)[0]);
 				int comma = line.find(','), bracket = line.find('(');
 				string immStr = line.substr(comma + 1, bracket - comma - 1);
-				sregex_iterator it2{ immStr.begin(), immStr.end(), immRgx };
+                sregex_iterator it2( immStr.begin(), immStr.end(), immRgx );
 				immStr = (*it2)[0];
 				if (regex_match(immStr, immDecimalRgx))
 					immediate = atoi(immStr.c_str());
@@ -120,8 +126,8 @@ void MIPSParser::parse(const string& fileName) {
 		if (matchesRgx)
 			continue;
 		for (MIPSInstruction::InstructionName i = MIPSInstruction::J; i <= MIPSInstruction::JUMP_PROCEDURE; i = (MIPSInstruction::InstructionName)(i + 1)) {
-			if (regex_match(line, regex{ instr[i] })) {
-				sregex_iterator it{ line.begin(), line.end(), immRgx };
+            if (regex_match(line, regex( instr[i] ))) {
+                sregex_iterator it( line.begin(), line.end(), immRgx );
 				int immediate;
 				string immStr = (*it)[0];
 				if (regex_match(immStr, immDecimalRgx))
@@ -139,18 +145,20 @@ void MIPSParser::parse(const string& fileName) {
 		}
 		if (matchesRgx)
 			continue;
-		if (regex_match(line, regex{ instr[MIPSInstruction::RETURN_PROCEDURE] })) {
+        if (regex_match(line, regex( instr[MIPSInstruction::RETURN_PROCEDURE] ))) {
 			instruction.setJType(line, MIPSInstruction::RETURN_PROCEDURE);
 			instructions.push_back(instruction);
 			matchesRgx = true;
 		}
 		if (!matchesRgx)
-			throw runtime_error("Invalid instruction: " + line);
+			ret.push_back(lineNumber);
 	}
+    cin.close();
+	return ret;
 }
 
 int MIPSParser::regNameToNumber(const string& name) {
-	if (regex_match(name, regex{ "\\$" + regNum }))
+    if (regex_match(name, regex( "\\$" + regNum )))
 		return atoi(name.substr(1, name.length() - 1).c_str());
 	else {
 		if (name[1] == 'z')

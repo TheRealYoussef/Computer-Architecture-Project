@@ -1,15 +1,11 @@
-#include "CPU.h"
-#include <exception>
-#include <iostream>
-using namespace std;
+#include "mainwindow.h"
+#include <QApplication>
 
-int main() {
-	try {
-		CPU c;
-		c.execute();
-	}
-	catch (exception& e) {
-		cerr << e.what();
-	}
-	return 0;
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+
+    return a.exec();
 }

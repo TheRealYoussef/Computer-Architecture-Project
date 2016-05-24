@@ -10,7 +10,7 @@ class ProgramCounter {
     
 public:
 
-    ProgramCounter();
+    ProgramCounter() : PC(0), previousPC(0) {}
 
     void execute();
 

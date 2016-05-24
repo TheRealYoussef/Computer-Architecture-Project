@@ -6,7 +6,7 @@ class Buffer3;
 class Mux3 {
     
 public:
-    Mux3(int i) {
+    Mux3(int i) : I0(0), I1(0), I2(0), S(0) {
 		idx = i;
     }
     

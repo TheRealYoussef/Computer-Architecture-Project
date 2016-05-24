@@ -15,21 +15,21 @@ public:
 	}
 
 	void stallNextJump() {
-		if (!stallL && !stallL2 && !stallL3) {
+        if (!stallNextJ && !stallL && !stallL2 && !stallL3) {
 			stallNextJ = true;
 			countStallNextJ = 0;
 		}
 	}
 
 	void stallNextLW() {
-		if (!stallL2 && !stallL3) {
+        if (!stallNextJ && !stallL2 && !stallL3) {
 			stallL = true;
 			countStallL = 0;
 		}
 	}
 
 	void stallNext2LW() {
-		if (!stallL3) {
+        if (!stallNextJ && !stallL3) {
 			stallL2 = true;
 			countStallL2 = 0;
 		}
